@@ -6,7 +6,8 @@ const userSchema = new mongoose.Schema({
     },
     username: {
         type: String,
-        required:true
+        required:true,
+        unique:true
     },
     password: {
         type: String,
@@ -16,7 +17,8 @@ const userSchema = new mongoose.Schema({
     // profession details======
     profession: {
         type: String,
-        required: true
+        enum:["student","developer","entrepreneur"]
+        // required: true
     },
     companyName: {
         type: String,
@@ -50,5 +52,5 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-const User= mongoose.model("User",userSchema);
-export default User;
+const UserModel= mongoose.model("User",userSchema);
+export default UserModel;

@@ -3,7 +3,20 @@ const app = express();
 import { configDotenv } from "dotenv"
 configDotenv();
 import connectDb from "./configs/dbConnect.js";
+import cors from "cors"
 
+
+// importing routes ============
+import userRouter from "./routes/userRoutes.js";
+
+
+app.use(cors({
+    origin:"*"
+}))
+
+app.use(express.json());
+
+app.use("/user",userRouter)
 
 
 
