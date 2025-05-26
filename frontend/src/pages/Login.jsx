@@ -1,16 +1,44 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { Link } from 'react-router';
-
+import { Link, useNavigate } from 'react-router';
+import axios from "axios"
 const Login = () => {
+  const navigate=useNavigate();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    // Handle login logic
-    console.log({ username, password });
-    toast.success("wokring")
+  
+    if(username===""||password===""){
+      toast.error("all fields are required");
+      return 
+    }
+
+
+    //hitting API request =============
+     try{
+      const isLogin=await axios.post(import.meta.env.VITE_API_URL+"/user/login",{
+      username,
+      password
+    })
+    console.log(isLogin)
+
+    if(isLogin){
+
+      toast.success(isLogin.data.msg);
+      setTimeout(()=>{
+        navigate("/updateProfile")
+      },1000)
+    }
+    
+  }catch(err){
+    console.log(err)
+    toast.error(err.response.data.msg)
+    console.log(err.response.data.msg)
+  }
+
   };
 
   return (
@@ -21,7 +49,6 @@ const Login = () => {
           <p className="text-gray-500 mt-2">Enter your credentials</p>
         </div>
 
-<button onClick={handleSubmit}>wwwe</button>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">

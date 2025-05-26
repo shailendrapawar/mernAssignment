@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import toast, {} from "react-hot-toast"
 import axios from "axios";
 
 const Register = () => {
+  const navigate=useNavigate()
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    // Handle registration logic
 
     if(username===""||password===""){
       toast.error("all fields are required");
@@ -23,10 +23,13 @@ const Register = () => {
 
     const regex=/^(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/
 
-    if(!regex.test(password)){
-      toast.error("password not strong enough");
-      return
-    }
+    // if(!regex.test(password)){
+    //   toast.error("password not strong enough");
+    //   return
+    // }
+
+
+    //hittig API request for resgister
 
   try{
       const isRegistered=await axios.post(import.meta.env.VITE_API_URL+"/user/register",{
@@ -38,6 +41,9 @@ const Register = () => {
     if(isRegistered){
 
       toast.success(isRegistered.data.msg);
+      setTimeout(()=>{
+        navigate("/")
+      },1000)
     }
     
   }catch(err){
@@ -45,8 +51,6 @@ const Register = () => {
     console.log(err.response.data.msg)
   }
 
-
-    // const isRegistered=
   };
 
   return (
