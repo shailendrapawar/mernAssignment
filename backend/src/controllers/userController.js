@@ -66,18 +66,56 @@ class UserController {
 
     }
 
-    static login = async () => {
+    static login = async (req,res) => {
 
-        const { username, password } = req.body;
+        try {
 
-        if (!username || !password) {
-            res.status(400).json({
-                msg: "fileds are missing",
+            const { username, password } = req.body;
+
+            if (!username || !password) {
+                res.status(400).json({
+                    msg: "fileds are missing",
+                    succes: false
+                })
+            }
+
+            //seraching for user ==============
+            const keyword=username.toLowerCase();
+            const isExist = await UserModel.findOne({ username:keyword });
+
+            if (!isExist) {
+                res.status(400).json({
+                    msg: "user does'nt exist",
+                    succes: false
+                })
+            }
+
+            const isPassMatch = await bcrypt.compare(password, isExist.password);
+
+            if (!isPassMatch) {
+                res.status(400).json({
+                    msg: "wrong credentials",
+                    succes: false
+                })
+            }
+
+            res.status(200).json({
+                msg: "login successful",
+                succes: true
+            })
+
+
+
+        } catch (err) {
+            console.log("error in login");
+            res.status(500).json({
+                msg: "internal server error",
                 succes: false
             })
         }
-
     }
+
+
 
 }
 
