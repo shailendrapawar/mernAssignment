@@ -1,18 +1,56 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
+import toast, {} from "react-hot-toast"
+import axios from "axios";
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     // Handle registration logic
-    console.log({ username, password });
+
+    if(username===""||password===""){
+      toast.error("all fields are required");
+      return 
+    }
+
+    if(username.length<4||username.length>20){
+      toast.error("username  length should be between 4-20");
+      return 
+    }
+
+    const regex=/^(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/
+
+    if(!regex.test(password)){
+      toast.error("password not strong enough");
+      return
+    }
+
+  try{
+      const isRegistered=await axios.post(import.meta.env.VITE_API_URL+"/user/register",{
+      username,
+      password
+    })
+    console.log(isRegistered)
+
+    if(isRegistered){
+
+      toast.success(isRegistered.data.msg);
+    }
+    
+  }catch(err){
+    toast.error(err.response.data.msg)
+    console.log(err.response.data.msg)
+  }
+
+
+    // const isRegistered=
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className=" bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-800">Register</h2>
@@ -59,7 +97,7 @@ const Register = () => {
 
           <div className="text-center text-sm text-gray-500">
             Already have an account?{' '}
-            <Link to="/login" className="text-indigo-600 hover:text-indigo-500 font-medium">
+            <Link to="/" className="text-indigo-600 hover:text-indigo-500 font-medium">
               Login
             </Link>
           </div>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { Link } from 'react-router';
 
 const Login = () => {
@@ -9,16 +10,18 @@ const Login = () => {
     e.preventDefault();
     // Handle login logic
     console.log({ username, password });
+    toast.success("wokring")
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className=" bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-800">Login</h2>
           <p className="text-gray-500 mt-2">Enter your credentials</p>
         </div>
 
+<button onClick={handleSubmit}>wwwe</button>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
