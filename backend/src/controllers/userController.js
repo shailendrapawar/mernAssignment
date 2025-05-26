@@ -104,8 +104,6 @@ class UserController {
                 succes: true
             })
 
-
-
         } catch (err) {
             console.log("error in login");
             res.status(500).json({
@@ -113,6 +111,15 @@ class UserController {
                 succes: false
             })
         }
+    }
+
+    static getUsername=async(req,res)=>{
+
+    }
+
+
+    static updateUser=async(req,res)=>{
+        
     }
 
 
